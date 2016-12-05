@@ -5,16 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="openlayers/ol.css" type="text/css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.deep_orange-blue.min.css" />
   <style>
     #map {
       height: 568px;
       width: 100%;
     }
+    .ol-control {
+      padding: 0px;
+    }
     .ol-zoom {
       top: 0.5em;
-      right: 0.5em;
+      right: 1em;
       left: auto;
+    }
+    .ol-attribution {
+      right: 1em;
+      left: auto;
+    }
+    .ol-rotate {
+      top: 5em;
+      right: 1em;
+      left: auto;
+    }
+    .mdl-layout__drawer-button {
+      height: 1.375em;
+      width: 1.375em;
+      padding: 0.15em;
+      font-size: 1.30em;
+      line-height: .1em;
+      color: white;
+      background-color: rgba(0,60,136,0.5);
     }
   </style>
   <title>Liatoppen</title>
@@ -27,54 +48,54 @@
       <span class="mdl-layout-title">Liatoppen skisenter</span>
       <nav class="mdl-navigation">
         <!-- 3,3 km -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_3_3">
             <span class="mdl-switch__label">3,3 km</span>
             <input type="checkbox" id="switch-kml_3_3" class="mdl-switch__input" onchange="toggleLayer(kml_3_3)" checked>
           </label>
-        </a>
+        </div>
         <!-- 3,0 km -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_3_0">
             <span class="mdl-switch__label">3,0 km</span>
             <input type="checkbox" id="switch-kml_3_0" class="mdl-switch__input" onchange="toggleLayer(kml_3_0)" checked>
           </label>
-        </a>
+        </div>
         <!-- 2,5 km -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_2_5">
             <span class="mdl-switch__label">2,5 km</span>
             <input type="checkbox" id="switch-kml_2_5" class="mdl-switch__input" onchange="toggleLayer(kml_2_5)" checked>
           </label>
-        </a>
+        </div>
         <!-- 2,0 km -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_2_0">
             <span class="mdl-switch__label">2,0 km</span>
             <input type="checkbox" id="switch-kml_2_0" class="mdl-switch__input" onchange="toggleLayer(kml_2_0)" checked>
           </label>
-        </a>
+        </div>
         <!-- 1,5 km -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_1_5">
             <span class="mdl-switch__label">1,5 km</span>
             <input type="checkbox" id="switch-kml_1_5" class="mdl-switch__input" onchange="toggleLayer(kml_1_5)" checked>
           </label>
-        </a>
+        </div>
         <!-- 1,0 km -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_1_0">
             <span class="mdl-switch__label">1,0 km</span>
             <input type="checkbox" id="switch-kml_1_0" class="mdl-switch__input" onchange="toggleLayer(kml_1_0)" checked>
           </label>
-        </a>
+        </div>
         <!-- standplass -->
-        <a class="mdl-navigation__link" href="">
+        <div class="mdl-navigation__link">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_standplass">
             <span class="mdl-switch__label">standplass</span>
             <input type="checkbox" id="switch-kml_standplass" class="mdl-switch__input" onchange="toggleLayer(kml_standplass)" checked>
           </label>
-        </a>
+        </div>
       </nav>
     </div>
     <main class="mdl-layout__content">
