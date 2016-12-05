@@ -123,7 +123,7 @@ var grunnkart = new ol.layer.Tile({
     minResolution: switchLayerResolution,
     source: new ol.source.WMTS({
         attributions: [attribution],
-        url: 'https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
+        url: 'http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
         layer: 'norges_grunnkart_graatone',
         matrixSet: matrixSet,
         format: 'image/png',
@@ -140,7 +140,7 @@ var topo2 = new ol.layer.Tile({
     maxResolution: switchLayerResolution,
     source: new ol.source.WMTS({
         attributions: [attribution],
-        url: 'https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
+        url: 'http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
         layer: 'topo2graatone',
         matrixSet: matrixSet,
         format: 'image/png',
