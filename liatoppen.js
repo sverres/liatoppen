@@ -116,8 +116,16 @@ var resolutions = [
     resolutionsKartverket[18]
 ]
 
-// Zoom-nvå for bytte av bakgrunnskart
+// Zoom-nivå for bytte av bakgrunnskart
 var switchLayerResolution = resolutions[9];
+
+var toggleLayer = function(layer) {
+    if (layer.getVisible()) {
+        layer.setVisible(false);
+    } else {
+        layer.setVisible(true);
+    }
+};
 
 var grunnkart = new ol.layer.Tile({
     minResolution: switchLayerResolution,
@@ -234,6 +242,6 @@ var map = new ol.Map({
         projection: projection,
         center: [479175, 6726100],
         resolutions: resolutions,
-        zoom: 8
+        zoom: 6
     })
 });
