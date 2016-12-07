@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-touch-fullscreen" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="stylesheet" href="openlayers/ol.css" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-orange.min.css">
+  <style>
+    #map {
+      height: 550px;
+      width: 100%;
+    }
+    .ol-control {
+      padding: 0px;
+      background-color: white;
+    }
+    .ol-zoom {
+      top: 0.5em;
+      right: 1em;
+      left: auto;
+    }
+    .ol-attribution {
+      right: 1em;
+      left: auto;
+    }
+    .ol-rotate {
+      top: 5em;
+      right: 1em;
+      left: auto;
+    }
+    .mdl-layout__drawer-button {
+      left: 0.5em;
+      top: 0.3em;
+      height: 1.375em;
+      width: 1.375em;
+      padding: 0.15em;
+      font-size: 1.30em;
+      line-height: .1em;
+      color: white;
+      border-radius: 2px;
+      border: 1px solid white;
+      background-color: rgba(0,60,136,0.5);
+    }
+    .marker {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
+
+  </style>
+  <title>Liatoppen</title>
+</head>
+
+<body>
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Liatoppen skisenter</span>
+      <nav class="mdl-navigation">
+        <!-- 3,3 km -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_3_3">
+            <span class="mdl-switch__label">3,3 km</span>
+            <input type="checkbox" id="switch-kml_3_3" class="mdl-switch__input" onchange="toggleLayer(kml_3_3)" checked>
+          </label>
+        </div>
+        <!-- 3,0 km -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_3_0">
+            <span class="mdl-switch__label">3,0 km</span>
+            <input type="checkbox" id="switch-kml_3_0" class="mdl-switch__input" onchange="toggleLayer(kml_3_0)" checked>
+          </label>
+        </div>
+        <!-- 2,5 km -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_2_5">
+            <span class="mdl-switch__label">2,5 km</span>
+            <input type="checkbox" id="switch-kml_2_5" class="mdl-switch__input" onchange="toggleLayer(kml_2_5)" checked>
+          </label>
+        </div>
+        <!-- 2,0 km -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_2_0">
+            <span class="mdl-switch__label">2,0 km</span>
+            <input type="checkbox" id="switch-kml_2_0" class="mdl-switch__input" onchange="toggleLayer(kml_2_0)" checked>
+          </label>
+        </div>
+        <!-- 1,5 km -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_1_5">
+            <span class="mdl-switch__label">1,5 km</span>
+            <input type="checkbox" id="switch-kml_1_5" class="mdl-switch__input" onchange="toggleLayer(kml_1_5)" checked>
+          </label>
+        </div>
+        <!-- 1,0 km -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_1_0">
+            <span class="mdl-switch__label">1,0 km</span>
+            <input type="checkbox" id="switch-kml_1_0" class="mdl-switch__input" onchange="toggleLayer(kml_1_0)" checked>
+          </label>
+        </div>
+        <!-- standplass -->
+        <div class="mdl-navigation__link">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-kml_standplass">
+            <span class="mdl-switch__label">standplass</span>
+            <input type="checkbox" id="switch-kml_standplass" class="mdl-switch__input" onchange="toggleLayer(kml_standplass)" checked>
+          </label>
+        </div>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div id="map"></div>
+            <div id="info" style="display: none;"></div>
+            <label for="track">
+              track position
+              <input id="track" type="checkbox"/>
+            </label>
+            <p>
+              position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
+              altitude : <code id="altitude"></code>&nbsp;&nbsp;
+              altitude accuracy : <code id="altitudeAccuracy"></code>&nbsp;&nbsp;
+              heading : <code id="heading"></code>&nbsp;&nbsp;
+              speed : <code id="speed"></code>
+            </p>
+          </div>
+    </main>
+  </div>
+
+  <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+  <script src="openlayers/ol-debug.js" type="text/javascript"></script>
+  <script src="proj4js/proj4.js"></script>
+  <script src="https://epsg.io/25832.js" type="text/javascript"></script>
+  <script src="liatoppenx2.js" type="text/javascript"></script>
+
+</body>
+
+</html>

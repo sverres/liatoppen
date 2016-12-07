@@ -45,6 +45,12 @@
       border: 1px solid white;
       background-color: rgba(0,60,136,0.5);
     }
+    .marker {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
+
   </style>
   <title>Liatoppen</title>
 </head>
@@ -109,17 +115,7 @@
     <main class="mdl-layout__content">
         <div class="page-content">
             <div id="map"></div>
-            <br>
-            <label for="track">&nbsp;&nbsp; track position<input id="track" type="checkbox"/></label>
-            <br><br>
-            <p>
-                &nbsp;&nbsp; position accuracy : <code id="accuracy"></code><br>
-                &nbsp;&nbsp; altitude : <code id="altitude"></code><br>
-                &nbsp;&nbsp; altitude accuracy : <code id="altitudeAccuracy"></code><br>
-                &nbsp;&nbsp; heading : <code id="heading"></code><br>
-                &nbsp;&nbsp; speed : <code id="speed"></code><br>
-            </p>
-            <div id="info"></div>
+            <div id="location" class="marker"><span class="icon-arrow-up"></span></div>
         </div>
     </main>
   </div>
@@ -127,8 +123,8 @@
   <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
   <script src="openlayers/ol-debug.js" type="text/javascript"></script>
   <script src="proj4js/proj4.js"></script>
-  <script src="http://epsg.io/25832.js" type="text/javascript"></script>
-  <script src="liatoppen.js" type="text/javascript"></script>
+  <script src="https://epsg.io/25832.js" type="text/javascript"></script>
+  <script src="liatoppenx1.js" type="text/javascript"></script>
 
 </body>
 

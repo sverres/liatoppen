@@ -247,106 +247,64 @@ var map = new ol.Map({
   })
 });
 
-var style = {
-    fillColor: '#000',
-    fillOpacity: 0.1,
-    strokeWidth: 0
-};
 
-var vector = new ol.layer.Vector('vector');
-map.addLayer(vector);
-
-var pulsate = function(feature) {
-    var point = feature.geometry.getCentroid(),
-        bounds = feature.geometry.getBounds(),
-        radius = Math.abs((bounds.right - bounds.left)/2),
-        count = 0,
-        grow = 'up';
-
-    var resize = function(){
-        if (count>16) {
-            clearInterval(window.resizeInterval);
-        }
-        var interval = radius * 0.03;
-        var ratio = interval/radius;
-        switch(count) {
-            case 4:
-            case 12:
-                grow = 'down'; break;
-            case 8:
-                grow = 'up'; break;
-        }
-        if (grow!=='up') {
-            ratio = - Math.abs(ratio);
-        }
-        feature.geometry.resize(1+ratio, point);
-        vector.drawFeature(feature);
-        count++;
-    };
-    window.resizeInterval = window.setInterval(resize, 50, point, radius);
-};
-
-var geolocate = new ol.Control.Geolocate({
-    bind: false,
-    geolocationOptions: {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 7000
-    }
+// set up geolocation to track our position
+var geolocation = new ol.Geolocation({
+  projection: projection
 });
-map.addControl(geolocate);
-var firstGeolocation = true;
-geolocate.events.register("locationupdated",geolocate,function(e) {
-    vector.removeAllFeatures();
-    var circle = new ol.Feature.Vector(
-        ol.Geometry.Polygon.createRegularPolygon(
-            new ol.Geometry.Point(e.point.x, e.point.y),
-            e.position.coords.accuracy/2,
-            40,
-            0
-        ),
-        {},
-        style
-    );
-    vector.addFeatures([
-        new ol.Feature.Vector(
-            e.point,
-            {},
-            {
-                graphicName: 'cross',
-                strokeColor: '#f00',
-                strokeWidth: 2,
-                fillOpacity: 0,
-                pointRadius: 10
-            }
-        ),
-        circle
-    ]);
-    if (firstGeolocation) {
-        map.zoomToExtent(vector.getDataExtent());
-        pulsate(circle);
-        firstGeolocation = false;
-        this.bind = true;
-    }
+
+function el(id) {
+  return document.getElementById(id);
+}
+
+el('track').addEventListener('change', function() {
+  geolocation.setTracking(this.checked);
 });
-geolocate.events.register("locationfailed",this,function() {
-    ol.Console.log('Location detection failed');
+
+// update the HTML page when the position changes.
+geolocation.on('change', function() {
+  el('accuracy').innerText = geolocation.getAccuracy() + ' [m]';
+  el('altitude').innerText = geolocation.getAltitude() + ' [m]';
+  el('altitudeAccuracy').innerText = geolocation.getAltitudeAccuracy() + ' [m]';
+  el('heading').innerText = geolocation.getHeading() + ' [rad]';
+  el('speed').innerText = geolocation.getSpeed() + ' [m/s]';
 });
-document.getElementById('locate').onclick = function() {
-    vector.removeAllFeatures();
-    geolocate.deactivate();
-    document.getElementById('track').checked = false;
-    geolocate.watch = false;
-    firstGeolocation = true;
-    geolocate.activate();
-};
-document.getElementById('track').onclick = function() {
-    vector.removeAllFeatures();
-    geolocate.deactivate();
-    if (this.checked) {
-        geolocate.watch = true;
-        firstGeolocation = true;
-        geolocate.activate();
-    }
-};
-document.getElementById('track').checked = false;
+
+// handle geolocation error.
+geolocation.on('error', function(error) {
+  var info = document.getElementById('info');
+  info.innerHTML = error.message;
+  info.style.display = '';
+});
+
+var accuracyFeature = new ol.Feature();
+geolocation.on('change:accuracyGeometry', function() {
+  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+});
+
+var positionFeature = new ol.Feature();
+positionFeature.setStyle(new ol.style.Style({
+  image: new ol.style.Circle({
+    radius: 6,
+    fill: new ol.style.Fill({
+      color: '#3399CC'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#fff',
+      width: 2
+    })
+  })
+}));
+
+geolocation.on('change:position', function() {
+  var coordinates = geolocation.getPosition();
+  positionFeature.setGeometry(coordinates ?
+      new ol.geom.Point(coordinates) : null);
+});
+
+new ol.layer.Vector({
+  map: map,
+  source: new ol.source.Vector({
+    features: [accuracyFeature, positionFeature]
+  })
+});

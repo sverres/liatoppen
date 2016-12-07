@@ -247,106 +247,32 @@ var map = new ol.Map({
   })
 });
 
-var style = {
-    fillColor: '#000',
-    fillOpacity: 0.1,
-    strokeWidth: 0
-};
-
-var vector = new ol.layer.Vector('vector');
-map.addLayer(vector);
-
-var pulsate = function(feature) {
-    var point = feature.geometry.getCentroid(),
-        bounds = feature.geometry.getBounds(),
-        radius = Math.abs((bounds.right - bounds.left)/2),
-        count = 0,
-        grow = 'up';
-
-    var resize = function(){
-        if (count>16) {
-            clearInterval(window.resizeInterval);
-        }
-        var interval = radius * 0.03;
-        var ratio = interval/radius;
-        switch(count) {
-            case 4:
-            case 12:
-                grow = 'down'; break;
-            case 8:
-                grow = 'up'; break;
-        }
-        if (grow!=='up') {
-            ratio = - Math.abs(ratio);
-        }
-        feature.geometry.resize(1+ratio, point);
-        vector.drawFeature(feature);
-        count++;
-    };
-    window.resizeInterval = window.setInterval(resize, 50, point, radius);
-};
-
-var geolocate = new ol.Control.Geolocate({
-    bind: false,
-    geolocationOptions: {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 7000
-    }
+// set up geolocation to track our position
+var geolocation = new ol.Geolocation({
+  tracking: true
 });
-map.addControl(geolocate);
-var firstGeolocation = true;
-geolocate.events.register("locationupdated",geolocate,function(e) {
-    vector.removeAllFeatures();
-    var circle = new ol.Feature.Vector(
-        ol.Geometry.Polygon.createRegularPolygon(
-            new ol.Geometry.Point(e.point.x, e.point.y),
-            e.position.coords.accuracy/2,
-            40,
-            0
-        ),
-        {},
-        style
-    );
-    vector.addFeatures([
-        new ol.Feature.Vector(
-            e.point,
-            {},
-            {
-                graphicName: 'cross',
-                strokeColor: '#f00',
-                strokeWidth: 2,
-                fillOpacity: 0,
-                pointRadius: 10
-            }
-        ),
-        circle
-    ]);
-    if (firstGeolocation) {
-        map.zoomToExtent(vector.getDataExtent());
-        pulsate(circle);
-        firstGeolocation = false;
-        this.bind = true;
-    }
+// bind it to the view's projection and update the view as we move
+geolocation.bindTo('projection', view);
+geolocation.on('change:position', function() {
+  view.setCenter(geolocation.getPosition());
 });
-geolocate.events.register("locationfailed",this,function() {
-    ol.Console.log('Location detection failed');
+// add a marker to display the current location
+var marker = new ol.Overlay({
+  element: document.getElementById('location'),
+  positioning: 'center-center'
 });
-document.getElementById('locate').onclick = function() {
-    vector.removeAllFeatures();
-    geolocate.deactivate();
-    document.getElementById('track').checked = false;
-    geolocate.watch = false;
-    firstGeolocation = true;
-    geolocate.activate();
-};
-document.getElementById('track').onclick = function() {
-    vector.removeAllFeatures();
-    geolocate.deactivate();
-    if (this.checked) {
-        geolocate.watch = true;
-        firstGeolocation = true;
-        geolocate.activate();
-    }
-};
-document.getElementById('track').checked = false;
+map.addOverlay(marker);
+// and bind it to the geolocation's position updates
+marker.bindTo('position', geolocation);
+
+// create a new device orientation object set to track the device
+var deviceOrientation = new ol.DeviceOrientation({
+  tracking: true
+});
+// when the device changes heading, rotate the view so that
+// 'up' on the device points the direction we are facing
+deviceOrientation.on('change:heading', onChangeHeading);
+function onChangeHeading(event) {
+  var heading = event.target.getHeading();
+  view.setRotation(-heading);
+}
