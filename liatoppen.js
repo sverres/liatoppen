@@ -132,7 +132,7 @@ var grunnkart = new ol.layer.Tile({
   source: new ol.source.WMTS({
     attributions: [attribution],
     url: 'http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
-    layer: 'norges_grunnkart_graatone',
+    layer: 'norges_grunnkart',
     matrixSet: matrixSet,
     format: 'image/png',
     tileGrid: new ol.tilegrid.WMTS({
@@ -149,7 +149,7 @@ var topo2 = new ol.layer.Tile({
   source: new ol.source.WMTS({
     attributions: [attribution],
     url: 'http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
-    layer: 'topo2graatone',
+    layer: 'topo2',
     matrixSet: matrixSet,
     format: 'image/png',
     tileGrid: new ol.tilegrid.WMTS({
@@ -239,8 +239,8 @@ var map = new ol.Map({
   target: 'map',
   view: new ol.View({
     projection: projection,
-    center: [479175, 6725100],
+    center: [479175, 6726000],
     resolutions: resolutions,
-    zoom: 6
+    zoom: 9
   })
 });
