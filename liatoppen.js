@@ -18,6 +18,9 @@
  *
  */
 
+var center = [479250, 6726000];
+var zoom = 9;
+
 var attribution = new ol.Attribution({
   html: 'Kartgrunnlag: <a href="http://kartverket.no">Kartverket</a>'
 });
@@ -158,8 +161,7 @@ var kml_3_3 = new ol.layer.Vector({
     url: 'kml/3_3.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
 var kml_3_0 = new ol.layer.Vector({
@@ -167,8 +169,7 @@ var kml_3_0 = new ol.layer.Vector({
     url: 'kml/3.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
 var kml_2_5 = new ol.layer.Vector({
@@ -176,8 +177,7 @@ var kml_2_5 = new ol.layer.Vector({
     url: 'kml/2_5.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
 var kml_2_0 = new ol.layer.Vector({
@@ -185,8 +185,7 @@ var kml_2_0 = new ol.layer.Vector({
     url: 'kml/2.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
 var kml_1_5 = new ol.layer.Vector({
@@ -194,8 +193,7 @@ var kml_1_5 = new ol.layer.Vector({
     url: 'kml/1_5.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
 var kml_1_0 = new ol.layer.Vector({
@@ -203,8 +201,7 @@ var kml_1_0 = new ol.layer.Vector({
     url: 'kml/1.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
 var kml_standplass = new ol.layer.Vector({
@@ -212,18 +209,10 @@ var kml_standplass = new ol.layer.Vector({
     url: 'kml/standplass.kml',
     format: new ol.format.KML(),
     projection: projection
-  }),
-  visible: true
+  })
 });
 
-kml_3_3.legend = "3,3 km - blå";
-kml_3_0.legend = "3 km - gul";
-kml_2_5.legend = "2,5 km - grønn";
-kml_2_0.legend = "2 km - rød";
-kml_1_5.legend = "1,5 km - oransje";
-kml_1_0.legend = "1 km - fiolett";
-kml_standplass.legend = "Standplass og strafferunde - rosa";
-
+// setter id property for layer - må samsvare med legend id'er i html-fil
 kml_3_3.id = "kml_3_3";
 kml_3_0.id = "kml_3_0";
 kml_2_5.id = "kml_2_5";
@@ -232,6 +221,16 @@ kml_1_5.id = "kml_1_5";
 kml_1_0.id = "kml_1_0";
 kml_standplass.id = "kml_standplass";
 
+// henter legend-tekst fra html div-element og legger inn på layer-objektet
+kml_3_3.legend = document.getElementById("kml_3_3").textContent;
+kml_3_0.legend = document.getElementById("kml_3_0").textContent;
+kml_2_5.legend = document.getElementById("kml_2_5").textContent;
+kml_2_0.legend = document.getElementById("kml_2_0").textContent;
+kml_1_5.legend = document.getElementById("kml_1_5").textContent;
+kml_1_0.legend = document.getElementById("kml_1_0").textContent;
+kml_standplass.legend = document.getElementById("kml_standplass").textContent;
+
+// slår av og på lag og sletter/setter legend-tekst
 var toggleLayer = function(layer) {
   if (layer.getVisible()) {
     layer.setVisible(false);
@@ -259,9 +258,9 @@ var map = new ol.Map({
   target: 'map',
   view: new ol.View({
     projection: projection,
-    center: [479250, 6726000],
+    center: center,
     resolutions: resolutions,
-    zoom: 9
+    zoom: zoom
   })
 });
 
