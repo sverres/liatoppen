@@ -2,17 +2,28 @@
 <html>
 
 <head>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-touch-fullscreen" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <link rel="stylesheet" href="openlayers/ol.css" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-orange.min.css">
   <style>
+    body {
+      font-family: 'Roboto';
+    }
     #map {
       height: 100%;
       width: 100%;
+    }
+    @media only screen and (max-device-width: 480px) {
+      #map {
+        height: 530px;
+        width: 100%;
+      }
     }
     .ol-control {
       padding: 0px;
@@ -45,8 +56,16 @@
       border: 1px solid white;
       background-color: rgba(0,60,136,0.5);
     }
+    #legend {
+      padding: 0.2em;
+      font-weight: 500;
+      font-size: 1.2em;
+      line-height: 1.1em;
+      color: #5868BE;
+      visibility: hidden;
+    }
   </style>
-  <title>Liatoppen</title>
+  <title>Liatoppen skisenter</title>
 </head>
 
 <body>
@@ -109,6 +128,15 @@
     <main class="mdl-layout__content">
       <div class="page-content">
         <div id="map"></div>
+        <div id="legend">
+          <div id="kml_3_3">3,3 km - blå</div>
+          <div id="kml_3_0">3,0 km - gul</div>
+          <div id="kml_2_5">2,5 km - grønn</div>
+          <div id="kml_2_0">2,0 km - rød</div>
+          <div id="kml_1_5">1,5 km - oransje</div>
+          <div id="kml_1_0">1,0 km - fiolett</div>
+          <div id="kml_standplass">Standplass og strafferunde - rosa</div>
+        </div>
       </div>
     </main>
   </div>

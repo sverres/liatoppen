@@ -1,5 +1,5 @@
 # liatoppen
 
-[demokart](https://rawgit.com/sverres/liatoppen/master/kart.html)
+[demokart](http://sverres.net/liatoppen/)
 
 

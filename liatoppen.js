@@ -1,7 +1,7 @@
 /*
  * http://github.com/sverres/liatoppen
  *
- * sverre.stikbakke 04.12.2016
+ * sverre.stikbakke 08.12.2016
  *
  */
 
@@ -119,14 +119,6 @@ var resolutions = [
 // Zoom-nivå for bytte av bakgrunnskart
 var switchLayerResolution = resolutions[9];
 
-var toggleLayer = function(layer) {
-  if (layer.getVisible()) {
-    layer.setVisible(false);
-  } else {
-    layer.setVisible(true);
-  }
-};
-
 var grunnkart = new ol.layer.Tile({
   minResolution: switchLayerResolution,
   source: new ol.source.WMTS({
@@ -224,6 +216,34 @@ var kml_standplass = new ol.layer.Vector({
   visible: true
 });
 
+kml_3_3.legend = "3,3 km - blå";
+kml_3_0.legend = "3 km - gul";
+kml_2_5.legend = "2,5 km - grønn";
+kml_2_0.legend = "2 km - rød";
+kml_1_5.legend = "1,5 km - oransje";
+kml_1_0.legend = "1 km - fiolett";
+kml_standplass.legend = "Standplass og strafferunde - rosa";
+
+kml_3_3.id = "kml_3_3";
+kml_3_0.id = "kml_3_0";
+kml_2_5.id = "kml_2_5";
+kml_2_0.id = "kml_2_0";
+kml_1_5.id = "kml_1_5";
+kml_1_0.id = "kml_1_0";
+kml_standplass.id = "kml_standplass";
+
+var toggleLayer = function(layer) {
+  if (layer.getVisible()) {
+    layer.setVisible(false);
+    var legend = document.getElementById(layer.id);
+    legend.innerHTML="";
+  } else {
+    layer.setVisible(true);
+    var legend = document.getElementById(layer.id);
+    legend.innerHTML= layer.legend;
+  }
+};
+
 var map = new ol.Map({
   layers: [
     grunnkart,
@@ -239,8 +259,11 @@ var map = new ol.Map({
   target: 'map',
   view: new ol.View({
     projection: projection,
-    center: [479175, 6726000],
+    center: [479250, 6726000],
     resolutions: resolutions,
     zoom: 9
   })
 });
+
+// venter med å vise tegnforklaring til kartet er ferdig lastet
+document.getElementById("legend").style.visibility = "visible";
