@@ -4,7 +4,6 @@
  * sverre.stikbakke 08.12.2016
  *
  */
-
 /*
  * http://kartverket.no/Kart/Gratis-kartdata/WMS-tjenester/
  *
@@ -17,7 +16,6 @@
  * http://wms.geonorge.no/kr/koordsys_res.txt
  *
  */
-
 var center = [479250, 6726000];
 var zoom = 9;
 
@@ -235,11 +233,11 @@ var toggleLayer = function(layer) {
   if (layer.getVisible()) {
     layer.setVisible(false);
     var legend = document.getElementById(layer.id);
-    legend.innerHTML="";
+    legend.innerHTML = "";
   } else {
     layer.setVisible(true);
     var legend = document.getElementById(layer.id);
-    legend.innerHTML= layer.legend;
+    legend.innerHTML = layer.legend;
   }
 };
 
