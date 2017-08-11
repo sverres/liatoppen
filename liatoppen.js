@@ -1,10 +1,13 @@
-/*
+/**
  * http://github.com/sverres/liatoppen
  *
  * sverre.stikbakke 08.12.2016
  *
  */
-/*
+
+/**
+ * Referanser:
+ *  
  * http://kartverket.no/Kart/Gratis-kartdata/WMS-tjenester/
  *
  * http://status.kartverket.no/tjenester/openwms.py?
@@ -16,6 +19,7 @@
  * http://wms.geonorge.no/kr/koordsys_res.txt
  *
  */
+
 var center = [479250, 6726000];
 var zoom = 9;
 
@@ -97,7 +101,7 @@ var matrixIds = [
   matrixIdsKartverket[16],
   matrixIdsKartverket[17],
   matrixIdsKartverket[18]
-]
+];
 
 // Må samsvare med matrixIds
 var resolutions = [
@@ -115,7 +119,7 @@ var resolutions = [
   resolutionsKartverket[16],
   resolutionsKartverket[17],
   resolutionsKartverket[18]
-]
+];
 
 // Zoom-nivå for bytte av bakgrunnskart
 var switchLayerResolution = resolutions[9];
@@ -154,86 +158,48 @@ var topo2 = new ol.layer.Tile({
   })
 });
 
-var kml_3_3 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/3_3.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
+var kml_layer = function (kmlfile) {return new ol.layer.Vector({
+    source: new ol.source.Vector({
+      url: kmlfile,
+      format: new ol.format.KML(),
+      projection: projection
+    })
+  });
+};
 
-var kml_3_0 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/3.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
-
-var kml_2_5 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/2_5.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
-
-var kml_2_0 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/2.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
-
-var kml_1_5 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/1_5.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
-
-var kml_1_0 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/1.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
-
-var kml_standplass = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'kml/standplass.kml',
-    format: new ol.format.KML(),
-    projection: projection
-  })
-});
+// oppretter layer for hver kml-fil
+var kml_3_3 = kml_layer('kml/3_3.kml');
+var kml_3_0 = kml_layer('kml/3.kml');
+var kml_2_5 = kml_layer('kml/2_5.kml');
+var kml_2_0 = kml_layer('kml/2.kml');
+var kml_1_5 = kml_layer('kml/1_5.kml');
+var kml_1_0 = kml_layer('kml/1.kml');
+var kml_standplass = kml_layer('kml/standplass.kml');
 
 // setter id property for layer - må samsvare med legend id'er i html-fil
-kml_3_3.id = "kml_3_3";
-kml_3_0.id = "kml_3_0";
-kml_2_5.id = "kml_2_5";
-kml_2_0.id = "kml_2_0";
-kml_1_5.id = "kml_1_5";
-kml_1_0.id = "kml_1_0";
-kml_standplass.id = "kml_standplass";
+kml_3_3.id = 'kml_3_3';
+kml_3_0.id = 'kml_3_0';
+kml_2_5.id = 'kml_2_5';
+kml_2_0.id = 'kml_2_0';
+kml_1_5.id = 'kml_1_5';
+kml_1_0.id = 'kml_1_0';
+kml_standplass.id = 'kml_standplass';
 
 // henter legend-tekst fra html div-element og legger inn på layer-objektet
-kml_3_3.legend = document.getElementById("kml_3_3").textContent;
-kml_3_0.legend = document.getElementById("kml_3_0").textContent;
-kml_2_5.legend = document.getElementById("kml_2_5").textContent;
-kml_2_0.legend = document.getElementById("kml_2_0").textContent;
-kml_1_5.legend = document.getElementById("kml_1_5").textContent;
-kml_1_0.legend = document.getElementById("kml_1_0").textContent;
-kml_standplass.legend = document.getElementById("kml_standplass").textContent;
+kml_3_3.legend = document.getElementById('kml_3_3').textContent;
+kml_3_0.legend = document.getElementById('kml_3_0').textContent;
+kml_2_5.legend = document.getElementById('kml_2_5').textContent;
+kml_2_0.legend = document.getElementById('kml_2_0').textContent;
+kml_1_5.legend = document.getElementById('kml_1_5').textContent;
+kml_1_0.legend = document.getElementById('kml_1_0').textContent;
+kml_standplass.legend = document.getElementById('kml_standplass').textContent;
 
 // slår av og på lag og sletter/setter legend-tekst
 var toggleLayer = function(layer) {
   if (layer.getVisible()) {
     layer.setVisible(false);
     var legend = document.getElementById(layer.id);
-    legend.innerHTML = "";
+    legend.innerHTML = '';
   } else {
     layer.setVisible(true);
     var legend = document.getElementById(layer.id);
@@ -263,4 +229,4 @@ var map = new ol.Map({
 });
 
 // venter med å vise tegnforklaring til kartet er ferdig lastet
-document.getElementById("legend").style.visibility = "visible";
+document.getElementById('legend').style.visibility = 'visible';
