@@ -8,10 +8,7 @@
 /**
  * Referanser:
  *  
- * http://kartverket.no/Kart/Gratis-kartdata/WMS-tjenester/
- *
- * http://status.kartverket.no/tjenester/openwms.py?
- * http://openwms.statkart.no/skwms1/wms.topo2?request=GetCapabilities&Service=WMS
+ * http://kartverket.no/data/api-og-wms/
  *
  * http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?
  * Version=1.0.0&service=wmts&request=getcapabilities
@@ -24,7 +21,9 @@ var center = [479250, 6726000];
 var zoom = 9;
 
 var attribution = new ol.Attribution({
-  html: 'Kartgrunnlag: <a href="http://kartverket.no">Kartverket</a>'
+  html: 'Kartgrunnlag: <a href="http://kartverket.no">Kartverket</a>\
+         Kode: <a href="https://github.com/sverres/liatoppen">\
+         github.com/sverres</a>'
 });
 
 var extentKartverket = [-2000000, 3500000, 3545984, 9045984];
@@ -35,7 +34,7 @@ var projection = new ol.proj.Projection({
   extent: extentKartverket
 });
 
-// Alle tilgjengelige WMTS zoom-nivåer
+// Alle tilgjengelige WMTS zoom-nivaaer
 // - verdiene er meter i terrenget pr. bildepunkt/pixel
 var resolutionsKartverket = [
   21664,
@@ -62,7 +61,7 @@ var resolutionsKartverket = [
 // WMTS kartflis-sett
 var matrixSet = 'EPSG:25832';
 
-// ID'er for alle tilgjengelige WMTS zoom-nivåer
+// ID'er for alle tilgjengelige WMTS zoom-nivaaer
 var matrixIdsKartverket = [
   'EPSG:25832:0',
   'EPSG:25832:1',
@@ -85,7 +84,7 @@ var matrixIdsKartverket = [
   'EPSG:25832:18'
 ];
 
-// Aktive zoom-nivåer
+// Aktive zoom-nivaaer
 var matrixIds = [
   matrixIdsKartverket[5],
   matrixIdsKartverket[6],
@@ -103,7 +102,7 @@ var matrixIds = [
   matrixIdsKartverket[18]
 ];
 
-// Må samsvare med matrixIds
+// Maa samsvare med matrixIds
 var resolutions = [
   resolutionsKartverket[5],
   resolutionsKartverket[6],
@@ -121,7 +120,7 @@ var resolutions = [
   resolutionsKartverket[18]
 ];
 
-// Zoom-nivå for bytte av bakgrunnskart
+// Zoom-nivaa for bytte av bakgrunnskart
 var switchLayerResolution = resolutions[9];
 
 var grunnkart = new ol.layer.Tile({
@@ -158,67 +157,131 @@ var topo2 = new ol.layer.Tile({
   })
 });
 
-var kml_layer = function (kmlfile) {return new ol.layer.Vector({
+var createKmlLayer = function (kmlFile) {return new ol.layer.Vector({
     source: new ol.source.Vector({
-      url: kmlfile,
+      url: kmlFile,
       format: new ol.format.KML(),
-      projection: projection
-    })
+      projection: projection,
+    }),
   });
 };
 
-// oppretter layer for hver kml-fil
-var kml_3_3 = kml_layer('kml/3_3.kml');
-var kml_3_0 = kml_layer('kml/3.kml');
-var kml_2_5 = kml_layer('kml/2_5.kml');
-var kml_2_0 = kml_layer('kml/2.kml');
-var kml_1_5 = kml_layer('kml/1_5.kml');
-var kml_1_0 = kml_layer('kml/1.kml');
-var kml_standplass = kml_layer('kml/standplass.kml');
+var addMenu = function (layerId, menuText) {
+  var layerSwitchText = document.createElement('div');
+  layerSwitchText.setAttribute("class", "mdl-switch__label");
+  layerSwitchText.textContent = menuText;
 
-// setter id property for layer - må samsvare med legend id'er i html-fil
-kml_3_3.id = 'kml_3_3';
-kml_3_0.id = 'kml_3_0';
-kml_2_5.id = 'kml_2_5';
-kml_2_0.id = 'kml_2_0';
-kml_1_5.id = 'kml_1_5';
-kml_1_0.id = 'kml_1_0';
-kml_standplass.id = 'kml_standplass';
+  var layerSwitch = document.createElement('input');
+  layerSwitch.setAttribute("type", "checkbox");
+  layerSwitch.setAttribute("id", "switch-" + layerId.layerId);
+  layerSwitch.setAttribute("class", "mdl-switch__input");
+  layerSwitch.setAttribute("onchange", "toggleLayer(" + layerId.layerId + ")");
+  layerSwitch.setAttribute("checked", "");
 
-// henter legend-tekst fra html div-element og legger inn på layer-objektet
-kml_3_3.legend = document.getElementById('kml_3_3').textContent;
-kml_3_0.legend = document.getElementById('kml_3_0').textContent;
-kml_2_5.legend = document.getElementById('kml_2_5').textContent;
-kml_2_0.legend = document.getElementById('kml_2_0').textContent;
-kml_1_5.legend = document.getElementById('kml_1_5').textContent;
-kml_1_0.legend = document.getElementById('kml_1_0').textContent;
-kml_standplass.legend = document.getElementById('kml_standplass').textContent;
+  var menuLabel = document.createElement('label');
+  menuLabel.setAttribute("class", "mdl-switch mdl-js-switch mdl-js-ripple-effect");
+  menuLabel.setAttribute("for", "switch-" + layerId.layerId);
+  menuLabel.appendChild(layerSwitchText);
+  menuLabel.appendChild(layerSwitch);
 
-// slår av og på lag og sletter/setter legend-tekst
+  var menuItem = document.createElement('div');
+  menuItem.setAttribute("class", "mdl-navigation__link");
+  menuItem.appendChild(menuLabel);
+  
+  document.getElementsByClassName('mdl-navigation')[0].appendChild(menuItem);
+}
+
+var addMenuForLayer = function (layerId) {
+  addMenu(layerId, layerId.menuText)
+};
+
+var addLegend = function (layerId, legendText) {
+  var child = document.createElement('div');
+  child.setAttribute("id", layerId.layerId);
+  child.textContent = legendText;
+  document.getElementById('legend').appendChild(child)
+}
+
+var addLegendForLayer = function (layerId) {
+  addLegend(layerId, layerId.legendText)
+};
+
+// slaar av og paa lag og sletter/setter legend-tekst
 var toggleLayer = function(layer) {
   if (layer.getVisible()) {
     layer.setVisible(false);
-    var legend = document.getElementById(layer.id);
+    var legend = document.getElementById(layer.layerId);
     legend.innerHTML = '';
   } else {
     layer.setVisible(true);
-    var legend = document.getElementById(layer.id);
-    legend.innerHTML = layer.legend;
+    var legend = document.getElementById(layer.layerId);
+    legend.innerHTML = layer.legendText;
   }
 };
 
+var kml_3_3 = createKmlLayer('kml/3_3.kml');
+kml_3_3.layerId = 'kml_3_3';
+kml_3_3.menuText = '3,3 km';
+kml_3_3.legendText = '3,3 km - blå';
+addMenuForLayer(kml_3_3);
+addLegendForLayer(kml_3_3);
+
+var kml_3_0 = createKmlLayer('kml/3.kml');
+kml_3_0.layerId = 'kml_3_0';
+kml_3_0.menuText = '3,0 km';
+kml_3_0.legendText = '3,0 km - gul';
+addMenuForLayer(kml_3_0);
+addLegendForLayer(kml_3_0);
+
+var kml_2_5 = createKmlLayer('kml/2_5.kml');
+kml_2_5.layerId = 'kml_2_5';
+kml_2_5.menuText = '2,5 km';
+kml_2_5.legendText = '2,5 km - grønn';
+addMenuForLayer(kml_2_5);
+addLegendForLayer(kml_2_5);
+
+var kml_2_0 = createKmlLayer('kml/2.kml');
+kml_2_0.layerId = 'kml_2_0';
+kml_2_0.menuText = '2,0 km';
+kml_2_0.legendText = '2,0 km - rød';
+addMenuForLayer(kml_2_0);
+addLegendForLayer(kml_2_0);
+
+var kml_1_5 = createKmlLayer('kml/1_5.kml');
+kml_1_5.layerId = 'kml_1_5';
+kml_1_5.menuText = '1,5 km';
+kml_1_5.legendText = '1,5 km - oransje';
+addMenuForLayer(kml_1_5);
+addLegendForLayer(kml_1_5);
+
+var kml_1_0 = createKmlLayer('kml/1.kml');
+kml_1_0.layerId = 'kml_1_0';
+kml_1_0.menuText = '1,0 km';
+kml_1_0.legendText = '1,0 km - fiolett';
+addMenuForLayer(kml_1_0);
+addLegendForLayer(kml_1_0);
+
+var kml_standplass = createKmlLayer('kml/standplass.kml');
+kml_standplass.layerId = 'kml_standplass';
+kml_standplass.menuText = 'standplass';
+kml_standplass.legendText = 'Standplass og strafferunde - rosa';
+addMenuForLayer(kml_standplass);
+addLegendForLayer(kml_standplass);
+
+var layers = [
+  grunnkart,
+  topo2,
+  kml_3_3,
+  kml_3_0,
+  kml_2_5,
+  kml_2_0,
+  kml_1_5,
+  kml_1_0,
+  kml_standplass  
+];
+
 var map = new ol.Map({
-  layers: [
-    grunnkart,
-    topo2,
-    kml_3_3,
-    kml_3_0,
-    kml_2_5,
-    kml_2_0,
-    kml_1_5,
-    kml_1_0,
-    kml_standplass
-  ],
+  layers: layers,
   target: 'map',
   view: new ol.View({
     projection: projection,
@@ -228,5 +291,5 @@ var map = new ol.Map({
   })
 });
 
-// venter med å vise tegnforklaring til kartet er ferdig lastet
+// venter med aa vise tegnforklaring til kartet er ferdig lastet
 document.getElementById('legend').style.visibility = 'visible';
