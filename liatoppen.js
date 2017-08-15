@@ -166,21 +166,21 @@ var createKmlLayer = function (kmlFile) {return new ol.layer.Vector({
   });
 };
 
-var addMenu = function (layerId, menuText) {
-  var layerSwitchText = document.createElement('div');
+var addMenu = function (layer, menuText) {
+  var layerSwitchText = document.createElement('span');
   layerSwitchText.setAttribute("class", "mdl-switch__label");
   layerSwitchText.textContent = menuText;
 
   var layerSwitch = document.createElement('input');
   layerSwitch.setAttribute("type", "checkbox");
-  layerSwitch.setAttribute("id", "switch-" + layerId.layerId);
+  layerSwitch.setAttribute("id", "switch-" + layer.layerId);
   layerSwitch.setAttribute("class", "mdl-switch__input");
-  layerSwitch.setAttribute("onchange", "toggleLayer(" + layerId.layerId + ")");
+  layerSwitch.setAttribute("onchange", "toggleLayer(" + layer.layerId + ")");
   layerSwitch.setAttribute("checked", "");
 
   var menuLabel = document.createElement('label');
   menuLabel.setAttribute("class", "mdl-switch mdl-js-switch mdl-js-ripple-effect");
-  menuLabel.setAttribute("for", "switch-" + layerId.layerId);
+  menuLabel.setAttribute("for", "switch-" + layer.layerId);
   menuLabel.appendChild(layerSwitchText);
   menuLabel.appendChild(layerSwitch);
 
@@ -189,21 +189,21 @@ var addMenu = function (layerId, menuText) {
   menuItem.appendChild(menuLabel);
   
   document.getElementsByClassName('mdl-navigation')[0].appendChild(menuItem);
-}
-
-var addMenuForLayer = function (layerId) {
-  addMenu(layerId, layerId.menuText)
 };
 
-var addLegend = function (layerId, legendText) {
+var addMenuForLayer = function (layer) {
+  addMenu(layer, layer.menuText)
+};
+
+var addLegend = function (layer, legendText) {
   var child = document.createElement('div');
-  child.setAttribute("id", layerId.layerId);
+  child.setAttribute("id", layer.layerId);
   child.textContent = legendText;
   document.getElementById('legend').appendChild(child)
-}
+};
 
-var addLegendForLayer = function (layerId) {
-  addLegend(layerId, layerId.legendText)
+var addLegendForLayer = function (layer) {
+  addLegend(layer, layer.legendText)
 };
 
 // slaar av og paa lag og sletter/setter legend-tekst
