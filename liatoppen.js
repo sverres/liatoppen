@@ -211,11 +211,11 @@ var toggleLayer = function(layer) {
   if (layer.getVisible()) {
     layer.setVisible(false);
     var legend = document.getElementById(layer.layerId);
-    legend.innerHTML = '';
+    legend.textContent = '';
   } else {
     layer.setVisible(true);
     var legend = document.getElementById(layer.layerId);
-    legend.innerHTML = layer.legendText;
+    legend.textContent = layer.legendText;
   }
 };
 
