@@ -1,5 +1,5 @@
 /**
- * http://github.com/sverres/liatoppen
+ * https://github.com/sverres/liatoppen
  *
  * sverre.stikbakke 08.12.2016
  *
@@ -8,12 +8,12 @@
 /**
  * Referanser:
  *  
- * http://kartverket.no/data/api-og-wms/
+ * https://kartverket.no/data/api-og-wms/
  *
- * http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?
+ * https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?
  * Version=1.0.0&service=wmts&request=getcapabilities
  *
- * http://wms.geonorge.no/kr/koordsys_res.txt
+ * https://wms.geonorge.no/kr/koordsys_res.txt
  *
  */
 
@@ -21,7 +21,7 @@ var center = [479250, 6726000];
 var zoom = 9;
 
 var attribution = new ol.Attribution({
-  html: 'Kartgrunnlag: <a href="http://kartverket.no">Kartverket</a>\
+  html: 'Kartgrunnlag: <a href="https://kartverket.no">Kartverket</a>\
          Kode: <a href="https://github.com/sverres/liatoppen">\
          github.com/sverres</a>'
 });
@@ -127,7 +127,7 @@ var grunnkart = new ol.layer.Tile({
   minResolution: switchLayerResolution,
   source: new ol.source.WMTS({
     attributions: [attribution],
-    url: 'http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
+    url: 'https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
     layer: 'norges_grunnkart',
     matrixSet: matrixSet,
     format: 'image/png',
@@ -140,12 +140,12 @@ var grunnkart = new ol.layer.Tile({
   })
 });
 
-var topo2 = new ol.layer.Tile({
+var topo4 = new ol.layer.Tile({
   maxResolution: switchLayerResolution,
   source: new ol.source.WMTS({
     attributions: [attribution],
-    url: 'http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
-    layer: 'topo2',
+    url: 'https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
+    layer: 'topo4',
     matrixSet: matrixSet,
     format: 'image/png',
     tileGrid: new ol.tilegrid.WMTS({
@@ -270,7 +270,7 @@ addLegendForLayer(kml_standplass);
 
 var layers = [
   grunnkart,
-  topo2,
+  topo4,
   kml_3_3,
   kml_3_0,
   kml_2_5,
