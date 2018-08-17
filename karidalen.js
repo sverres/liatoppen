@@ -17,7 +17,7 @@
  *
  */
 
-var center = [596950, 6731775];
+var center = [597050, 6731875];
 var zoom = 9;
 
 var attribution = new ol.Attribution({
@@ -219,58 +219,65 @@ var toggleLayer = function(layer) {
   }
 };
 
-var kml_3_3 = createKmlLayer('kml/OTS_Karidalen_3_3_SS_2015.kml');
+var kml_3_3 = createKmlLayer('kml/OTS_Karidalen_3_3_SS_2018.kml');
 kml_3_3.layerId = 'kml_3_3';
-kml_3_3.menuText = '3,3 km (3518 m)';
+kml_3_3.menuText = '3,3 km';
 kml_3_3.legendText = '3,3 km - blå';
 addMenuForLayer(kml_3_3);
 addLegendForLayer(kml_3_3);
 
-var kml_3_0 = createKmlLayer('kml/OTS_Karidalen_3_0_SS_2015.kml');
+var kml_3_0 = createKmlLayer('kml/OTS_Karidalen_3_0_SS_2018.kml');
 kml_3_0.layerId = 'kml_3_0';
-kml_3_0.menuText = '3,0 km (3140 m)';
+kml_3_0.menuText = '3,0 km';
 kml_3_0.legendText = '3,0 km - gul';
 addMenuForLayer(kml_3_0);
 addLegendForLayer(kml_3_0);
 
-var kml_2_5 = createKmlLayer('kml/OTS_Karidalen_2_5_SS_2015.kml');
+var kml_2_5 = createKmlLayer('kml/OTS_Karidalen_2_5_SS_2018.kml');
 kml_2_5.layerId = 'kml_2_5';
-kml_2_5.menuText = '2,5 km (2541 m)';
+kml_2_5.menuText = '2,5 km';
 kml_2_5.legendText = '2,5 km - grønn';
 addMenuForLayer(kml_2_5);
 addLegendForLayer(kml_2_5);
 
-var kml_2_0 = createKmlLayer('kml/OTS_Karidalen_2_0_SS_2015.kml');
+var kml_2_0 = createKmlLayer('kml/OTS_Karidalen_2_0_SS_2018.kml');
 kml_2_0.layerId = 'kml_2_0';
-kml_2_0.menuText = '2,0 km (2048 m)';
+kml_2_0.menuText = '2,0 km';
 kml_2_0.legendText = '2,0 km - rød';
 addMenuForLayer(kml_2_0);
 addLegendForLayer(kml_2_0);
 
-var kml_1_5 = createKmlLayer('kml/OTS_Karidalen_1_5_SS_2015.kml');
+var kml_1_5 = createKmlLayer('kml/OTS_Karidalen_1_5_SS_2018.kml');
 kml_1_5.layerId = 'kml_1_5';
-kml_1_5.menuText = '1,5 km (1533 m)';
+kml_1_5.menuText = '1,5 km';
 kml_1_5.legendText = '1,5 km - orange';
 addMenuForLayer(kml_1_5);
 addLegendForLayer(kml_1_5);
 
+var kml_1_0 = createKmlLayer('kml/OTS_Karidalen_1_0_SS_2018.kml');
+kml_1_0.layerId = 'kml_1_0';
+kml_1_0.menuText = '1,0 km';
+kml_1_0.legendText = '1,0 km - fiolett';
+addMenuForLayer(kml_1_0);
+addLegendForLayer(kml_1_0);
+
 var kml_start = createKmlLayer('kml/OTS_Karidalen_start_SS_2015.kml');
 kml_start.layerId = 'kml_start';
-kml_start.menuText = 'Start (53 m)';
+kml_start.menuText = 'Start';
 kml_start.legendText = 'Start - rosa';
 addMenuForLayer(kml_start);
 addLegendForLayer(kml_start);
 
 var kml_standplass = createKmlLayer('kml/OTS_Karidalen_standplass_SS_2015.kml');
 kml_standplass.layerId = 'kml_standplass';
-kml_standplass.menuText = 'Standpl. (516 m)';
+kml_standplass.menuText = 'Standplass';
 kml_standplass.legendText = 'Standplass - lys blå';
 addMenuForLayer(kml_standplass);
 addLegendForLayer(kml_standplass);
 
 var kml_maal = createKmlLayer('kml/OTS_Karidalen_maal_SS_2015.kml');
 kml_maal.layerId = 'kml_maal';
-kml_maal.menuText = 'Mål (135 m)';
+kml_maal.menuText = 'Mål';
 kml_maal.legendText = 'Mål - svart';
 addMenuForLayer(kml_maal);
 addLegendForLayer(kml_maal)
@@ -283,6 +290,7 @@ var layers = [
   kml_2_5,
   kml_2_0,
   kml_1_5,
+  kml_1_0,
   kml_start,
   kml_standplass,
   kml_maal 
