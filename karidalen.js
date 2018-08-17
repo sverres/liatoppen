@@ -219,6 +219,13 @@ var toggleLayer = function(layer) {
   }
 };
 
+var kml_4_0 = createKmlLayer('kml/OTS_Karidalen_4_0_SS_2018.kml');
+kml_4_0.layerId = 'kml_4_0';
+kml_4_0.menuText = '4,0 km';
+kml_4_0.legendText = '4,0 km - blå';
+addMenuForLayer(kml_4_0);
+addLegendForLayer(kml_4_0);
+
 var kml_3_3 = createKmlLayer('kml/OTS_Karidalen_3_3_SS_2018.kml');
 kml_3_3.layerId = 'kml_3_3';
 kml_3_3.menuText = '3,3 km';
@@ -285,6 +292,7 @@ addLegendForLayer(kml_maal)
 var layers = [
   grunnkart,
   topo4,
+  kml_4_0,
   kml_3_3,
   kml_3_0,
   kml_2_5,
