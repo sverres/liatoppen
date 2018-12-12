@@ -1,7 +1,7 @@
 /**
  * https://github.com/sverres/karidalen
  *
- * sverre.stikbakke 13.08.2018
+ * sverre.stikbakke 12.12.2018
  *
  */
 
@@ -17,13 +17,11 @@
  *
  */
 
-var center = [597050, 6731875];
+var center = [597050, 6731775];
 var zoom = 9;
 
 var attribution = new ol.Attribution({
-  html: 'Kartgrunnlag: <a href="https://kartverket.no">Kartverket</a>\
-         Kode: <a href="https://github.com/sverres/karidalen">\
-         github.com/sverres</a>'
+  html: 'Kartgrunnlag: <a href="https://kartverket.no">Kartverket</a>'
 });
 
 var extentKartverket = [-2000000, 3500000, 3545984, 9045984];
@@ -121,7 +119,7 @@ var resolutions = [
 ];
 
 // Zoom-nivaa for bytte av bakgrunnskart
-var switchLayerResolution = resolutions[10];
+var switchLayerResolution = resolutions[6];
 
 var grunnkart = new ol.layer.Tile({
   minResolution: switchLayerResolution,
@@ -145,7 +143,7 @@ var topo4 = new ol.layer.Tile({
   source: new ol.source.WMTS({
     attributions: [attribution],
     url: 'https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?',
-    layer: 'topo4',
+    layer: 'topo4graatone',
     matrixSet: matrixSet,
     format: 'image/png',
     tileGrid: new ol.tilegrid.WMTS({
@@ -157,7 +155,8 @@ var topo4 = new ol.layer.Tile({
   })
 });
 
-var createKmlLayer = function (kmlFile) {return new ol.layer.Vector({
+var createKmlLayer = function (kmlFile) {
+  return new ol.layer.Vector({
     source: new ol.source.Vector({
       url: kmlFile,
       format: new ol.format.KML(),
@@ -187,7 +186,7 @@ var addMenu = function (layer, menuText) {
   var menuItem = document.createElement('div');
   menuItem.setAttribute("class", "mdl-navigation__link");
   menuItem.appendChild(menuLabel);
-  
+
   document.getElementsByClassName('mdl-navigation')[0].appendChild(menuItem);
 };
 
@@ -207,7 +206,7 @@ var addLegendForLayer = function (layer) {
 };
 
 // slaar av og paa lag og sletter/setter legend-tekst
-var toggleLayer = function(layer) {
+var toggleLayer = function (layer) {
   if (layer.getVisible()) {
     layer.setVisible(false);
     var legend = document.getElementById(layer.layerId);
@@ -219,54 +218,49 @@ var toggleLayer = function(layer) {
   }
 };
 
-var kml_4_0 = createKmlLayer('kml/OTS_Karidalen_4_0_SS_2018.kml');
+
+var kml_4_0 = createKmlLayer('kml/OTS_Karidalen_4_0_SS_2019.kml');
 kml_4_0.layerId = 'kml_4_0';
 kml_4_0.menuText = '4,0 km';
-kml_4_0.legendText = '4,0 km - blå';
+kml_4_0.legendText = '4,0 km - brun';
 addMenuForLayer(kml_4_0);
 addLegendForLayer(kml_4_0);
 
-var kml_3_3 = createKmlLayer('kml/OTS_Karidalen_3_3_SS_2018.kml');
+
+var kml_3_3 = createKmlLayer('kml/OTS_Karidalen_3_3_SS_2015.kml');
 kml_3_3.layerId = 'kml_3_3';
 kml_3_3.menuText = '3,3 km';
 kml_3_3.legendText = '3,3 km - blå';
 addMenuForLayer(kml_3_3);
 addLegendForLayer(kml_3_3);
 
-var kml_3_0 = createKmlLayer('kml/OTS_Karidalen_3_0_SS_2018.kml');
+var kml_3_0 = createKmlLayer('kml/OTS_Karidalen_3_0_SS_2015.kml');
 kml_3_0.layerId = 'kml_3_0';
 kml_3_0.menuText = '3,0 km';
 kml_3_0.legendText = '3,0 km - gul';
 addMenuForLayer(kml_3_0);
 addLegendForLayer(kml_3_0);
 
-var kml_2_5 = createKmlLayer('kml/OTS_Karidalen_2_5_SS_2018.kml');
+var kml_2_5 = createKmlLayer('kml/OTS_Karidalen_2_5_SS_2015.kml');
 kml_2_5.layerId = 'kml_2_5';
 kml_2_5.menuText = '2,5 km';
 kml_2_5.legendText = '2,5 km - grønn';
 addMenuForLayer(kml_2_5);
 addLegendForLayer(kml_2_5);
 
-var kml_2_0 = createKmlLayer('kml/OTS_Karidalen_2_0_SS_2018.kml');
+var kml_2_0 = createKmlLayer('kml/OTS_Karidalen_2_0_SS_2015.kml');
 kml_2_0.layerId = 'kml_2_0';
 kml_2_0.menuText = '2,0 km';
 kml_2_0.legendText = '2,0 km - rød';
 addMenuForLayer(kml_2_0);
 addLegendForLayer(kml_2_0);
 
-var kml_1_5 = createKmlLayer('kml/OTS_Karidalen_1_5_SS_2018.kml');
+var kml_1_5 = createKmlLayer('kml/OTS_Karidalen_1_5_SS_2015.kml');
 kml_1_5.layerId = 'kml_1_5';
 kml_1_5.menuText = '1,5 km';
 kml_1_5.legendText = '1,5 km - orange';
 addMenuForLayer(kml_1_5);
 addLegendForLayer(kml_1_5);
-
-var kml_1_0 = createKmlLayer('kml/OTS_Karidalen_1_0_SS_2018.kml');
-kml_1_0.layerId = 'kml_1_0';
-kml_1_0.menuText = '1,0 km';
-kml_1_0.legendText = '1,0 km - fiolett';
-addMenuForLayer(kml_1_0);
-addLegendForLayer(kml_1_0);
 
 var kml_start = createKmlLayer('kml/OTS_Karidalen_start_SS_2015.kml');
 kml_start.layerId = 'kml_start';
@@ -298,10 +292,9 @@ var layers = [
   kml_2_5,
   kml_2_0,
   kml_1_5,
-  kml_1_0,
   kml_start,
   kml_standplass,
-  kml_maal 
+  kml_maal
 ];
 
 var map = new ol.Map({
